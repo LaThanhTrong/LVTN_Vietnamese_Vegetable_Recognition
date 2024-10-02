@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context=".Activities.AddContentActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:src="@drawable/arrow_back_icon"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            app:tint="@color/black"
+            android:contentDescription="Return" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_content"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            tools:ignore="RelativeOverlap" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cbbCultivate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp"
+                android:drawablePadding="20dp"
+                android:background="@drawable/corner_border"
+                android:gravity="center_vertical"
+                android:hint="@string/cultivate_type"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:fontFamily="@font/bevietnampro_regular"
+                app:drawableEndCompat="@drawable/ic_arrow_down"
+                app:drawableStartCompat="@drawable/ic_category" />
+
+            <TextView
+                android:id="@+id/cbbItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp"
+                android:drawablePadding="20dp"
+                android:background="@drawable/corner_border"
+                android:gravity="center_vertical"
+                android:hint="@string/plant"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textColorHint="@color/black"
+                android:fontFamily="@font/bevietnampro_regular"
+                app:drawableEndCompat="@drawable/ic_arrow_down"
+                app:drawableStartCompat="@drawable/plant_icon" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/culconNameEn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/content_nameEn"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/culconNameVi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/content_nameVi"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/culconDescEn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/content_descriptionEn"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/culconDescVi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/content_descriptionVi"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
+                android:layout_marginHorizontal="20dp">
+
+                <ImageButton
+                    android:id="@+id/image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/image_icon"
+                    android:contentDescription="@string/choose_image" />
+
+                <TextView
+                    android:id="@+id/chooseImageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_image"
+                    android:layout_centerInParent="true"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <jp.wasabeef.richeditor.RichEditor
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="130dp"
+                android:layout_below="@+id/imageLayout" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/toolkit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:padding="8dp">
+
+        <ImageButton
+            android:id="@+id/undoButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/undo_icon"
+            android:backgroundTint="@color/black"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/redoButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/redo_icon"
+            android:layout_toEndOf="@+id/undoButton"
+            android:backgroundTint="@color/black"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/boldButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bold_icon"
+            android:layout_toEndOf="@+id/redoButton"
+            android:backgroundTint="@color/black" />
+
+        <ImageButton
+            android:id="@+id/italicButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/italic_icon"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:layout_toEndOf="@id/boldButton"
+            android:backgroundTint="@color/black" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/image_icon"
+            android:backgroundTint="@color/black"
+            app:tint="@color/white"
+            android:contentDescription="@string/gallery"
+            android:layout_toEndOf="@id/italicButton" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_below="@+id/undoButton"
+            android:padding="10dp"
+            android:text="@string/save"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/emerald" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

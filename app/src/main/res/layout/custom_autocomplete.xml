@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/grey">
+
+    <TextView
+        android:id="@+id/autoCompleteItem"
+        android:layout_marginVertical="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/bevietnampro_regular"
+        android:padding="12dp"
+        android:background="@drawable/rounded_border_bg"
+        android:textSize="16sp" />
+
+</LinearLayout>

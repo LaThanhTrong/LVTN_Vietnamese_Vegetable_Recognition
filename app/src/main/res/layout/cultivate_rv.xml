@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cul"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_marginHorizontal="5dp"
+    android:background="@drawable/white_corner_bg"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="8dp"
+        android:text="Test text length"
+        android:elevation="1dp"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/bevietnampro_medium" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

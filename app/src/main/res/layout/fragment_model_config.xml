@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.ModelConfigFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:src="@drawable/arrow_back_icon"
+                android:layout_marginStart="15dp"
+                android:background="@android:color/transparent"
+                app:tint="@color/black"
+                android:contentDescription="Return" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/model_config"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"
+                tools:ignore="RelativeOverlap" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/saveBtn"
+            android:padding="20dp"
+            android:layout_below="@id/toolbar"
+            android:orientation="vertical">
+
+            <TextView
+                android:textColor="@color/black"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confidence_threshold" />
+
+            <LinearLayout
+                android:paddingHorizontal="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/confSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:trackColorActive="@color/emerald"
+                    app:trackColorInactive="@color/grey"
+                    android:contentDescription="@string/confidence_threshold"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    android:stepSize="1.0"
+                    app:tickVisible="false"
+                    app:labelBehavior="gone"
+                    app:thumbColor="@color/white"
+                    app:trackHeight="12dp" />
+
+                <TextView
+                    android:id="@+id/confScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bevietnampro_medium"
+                    android:textColor="@color/black"
+                    tools:text="30%" />
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:text="@string/numberDetection" />
+
+            <LinearLayout
+                android:paddingHorizontal="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/detectSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:trackColorActive="@color/emerald"
+                    app:trackColorInactive="@color/grey"
+                    android:contentDescription="@string/numberDetection"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    android:stepSize="1.0"
+                    app:tickVisible="false"
+                    app:labelBehavior="gone"
+                    app:thumbColor="@color/white"
+                    app:trackHeight="12dp" />
+
+                <TextView
+                    android:id="@+id/detectNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/bevietnampro_medium"
+                    tools:text="30" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="15dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:backgroundTint="#808080"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:text="@string/save"/>
+
+    </RelativeLayout>
+</FrameLayout>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.CameraFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+            <RelativeLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/black">
+
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:src="@drawable/arrow_back_icon"
+                    android:layout_marginStart="15dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Return" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/bevietnampro_medium"
+                    android:textStyle="bold"
+                    android:text="@string/live_detection"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    tools:ignore="RelativeOverlap" />
+
+
+            </RelativeLayout>
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/view_finder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:scaleType="fillStart" />
+
+            <com.lathanhtrong.lvtn.Others.OverlayView
+                android:id="@+id/overlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:translationZ="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/llSheet"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_bottom_sheet"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/ivArrow"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_up"/>
+
+            <LinearLayout
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:textColor="@color/primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/bevietnampro_medium"
+                    android:text="@string/interference_time" />
+
+                <TextView
+                    android:id="@+id/inferenceTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    tools:text="" />
+            </LinearLayout>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbGPU"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="16dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:text="@string/gpu_acceleration"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="6dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:text="@string/confidence_threshold" />
+
+            <LinearLayout
+                android:paddingHorizontal="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/confSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:trackColorActive="@color/emerald"
+                    app:trackColorInactive="@color/grey"
+                    android:contentDescription="@string/confidence_threshold"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    android:stepSize="1.0"
+                    app:tickVisible="false"
+                    app:labelBehavior="gone"
+                    app:thumbColor="@color/white"
+                    app:trackHeight="12dp" />
+
+                <TextView
+                    android:id="@+id/confScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    tools:text="30%" />
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="6dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:text="@string/numberDetection" />
+
+            <LinearLayout
+                android:paddingHorizontal="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/detectSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:trackColorActive="@color/emerald"
+                    app:trackColorInactive="@color/grey"
+                    android:contentDescription="@string/numberDetection"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    android:stepSize="1.0"
+                    app:tickVisible="false"
+                    app:labelBehavior="gone"
+                    app:thumbColor="@color/white"
+                    app:trackHeight="12dp" />
+
+                <TextView
+                    android:id="@+id/detectNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/bevietnampro_regular"
+                    tools:text="30" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>

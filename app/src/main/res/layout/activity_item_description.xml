@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activities.ItemDescriptionActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:src="@drawable/arrow_back_icon"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            app:tint="@color/black"
+            android:contentDescription="Return" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temp"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            tools:ignore="RelativeOverlap" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="25dp"
+            android:paddingTop="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/tomato"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Tomato"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:layout_below="@id/image"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/itemSname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lyco"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:textColor="#808080"
+                android:textSize="14sp"
+                android:layout_below="@id/itemName"
+                android:textStyle="italic"
+                android:layout_marginBottom="10dp"/>
+
+            <com.bluejamesbond.text.DocumentView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:documentView_textAlignment="justified"
+                app:documentView_antialias="true"
+                app:documentView_textSubPixel="true"
+                app:documentView_textFormat="plain"
+                app:documentView_textSize="17sp"
+                app:documentView_textColor="@color/black"
+                app:documentView_textTypefacePath="fonts/bevietnampro_regular.ttf"
+                android:layout_below="@id/itemSname"
+                android:layout_marginBottom="10dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:elevation="1dp"
+    android:paddingVertical="8dp"
+    android:layout_margin="6dp"
+    android:background="@drawable/rounded_border_bg"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivImage"
+        android:layout_width="150dp"
+        android:layout_height="110dp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_centerVertical="true"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+        android:src="@drawable/tomato" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/ivImage"
+        android:layout_toStartOf="@+id/btnDelete"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:text="Tomamto F1 Montavi"
+        android:fontFamily="@font/bevietnampro_medium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDatetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvName"
+        android:layout_toEndOf="@+id/ivImage"
+        android:layout_toStartOf="@+id/btnDelete"
+        android:text="This is datetime"
+        android:fontFamily="@font/bevietnampro_regular"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_delete"
+        android:background="@drawable/shapebutton"/>
+
+    <TextView
+        android:id="@+id/tvModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/ivImage"
+        android:layout_below="@+id/tvDatetime"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:text="Model"
+        android:fontFamily="@font/bevietnampro_medium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvConf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/ivImage"
+        android:layout_below="@+id/tvModel"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:text="Confidence"
+        android:fontFamily="@font/bevietnampro_regular" />
+
+</RelativeLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.SettingsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/shape_toolbar01">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/languageBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:fontFamily="@font/bevietnampro_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="5dp"
+            android:backgroundTint="#808080"
+            android:text="@string/change_language"/>
+
+        <Button
+            android:id="@+id/modelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/languageBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="5dp"
+            android:backgroundTint="#808080"
+            android:text="@string/change_model"/>
+
+        <Button
+            android:id="@+id/modelConfigBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/modelBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="5dp"
+            android:backgroundTint="#808080"
+            android:text="@string/model_config"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

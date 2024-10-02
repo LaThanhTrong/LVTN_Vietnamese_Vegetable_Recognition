@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activities.MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="58dp"
+        android:id="@+id/frame_layout"/>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomAppBar"
+        android:layout_gravity="bottom"
+        app:fabCradleMargin="10dp"
+        android:backgroundTint="@color/emerald"
+        app:contentInsetStart="0dp"
+        app:fabCradleRoundedCornerRadius="20dp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomNavigationView"
+            app:labelVisibilityMode="labeled"
+            android:background="@android:color/transparent"
+            app:itemRippleColor="@null"
+            app:itemBackground="@android:color/transparent"
+            app:itemTextAppearanceActive="@font/bevietnampro_medium"
+            app:itemTextAppearanceInactive="@font/bevietnampro_regular"
+            app:elevation="0dp"
+            app:itemIconTint="@drawable/bottom_menu"
+            app:itemTextColor="@color/white"
+            android:paddingHorizontal="3dp"
+            app:menu="@menu/bottom_menu"/>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/detection_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/detection"
+        android:src="@drawable/camera_icon"
+        android:layout_gravity="bottom|center_horizontal"
+        app:fabCustomSize="40dp"
+        app:maxImageSize="30dp"
+        android:layout_marginBottom="9dp"
+        app:tint ="#379D63"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
