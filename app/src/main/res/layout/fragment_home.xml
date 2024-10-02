@@ -452,7 +452,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Support"
+                        android:text="@string/support"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/bevietnampro_medium"
@@ -461,6 +461,7 @@
 
                     <!-- Support Option: Report a Bug -->
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/reportBug"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/grey"
@@ -480,7 +481,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/bevietnampro_regular"
-                                android:text="Report a bug"
+                                android:text="@string/reportBug"
                                 android:textSize="16sp"
                                 android:textColor="@color/black" />
 
@@ -495,6 +496,7 @@
 
                     <!-- Support Option: Request a Feature -->
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/requestFeature"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/grey"
@@ -514,7 +516,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/bevietnampro_regular"
-                                android:text="Request a feature"
+                                android:text="@string/requestFeature"
                                 android:textSize="16sp"
                                 android:textColor="@color/black" />
 
@@ -527,8 +529,9 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <!-- Support Option: Ask a Question -->
+                    <!-- Support Option: Contact -->
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/contactMe"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="16dp"
@@ -548,7 +551,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/bevietnampro_regular"
-                                android:text="Ask a question"
+                                android:text="@string/contactMe"
                                 android:textSize="16sp"
                                 android:textColor="@color/black" />
 
@@ -562,7 +565,6 @@
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
-
 
             </RelativeLayout>
 

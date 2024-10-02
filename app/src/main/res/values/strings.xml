@@ -91,4 +91,8 @@
     <string name="confidence">Confidence</string>
     <string name="del_history">Delete History</string>
     <string name="this_image">this image</string>
+    <string name="support">Support</string>
+    <string name="reportBug">Report a bug</string>
+    <string name="requestFeature">Request a feature</string>
+    <string name="contactMe">Contact me</string>
 </resources>

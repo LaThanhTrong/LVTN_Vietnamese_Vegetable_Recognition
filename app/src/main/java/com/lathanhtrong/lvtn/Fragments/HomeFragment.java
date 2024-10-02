@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -258,6 +259,43 @@ public class HomeFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
+            }
+        });
+
+        binding.reportBug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://github.com/LaThanhTrong/LVTN_Fruit_Vegetable_Recognition/issues";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                v.getContext().startActivity(intent);
+            }
+        });
+
+        binding.requestFeature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://github.com/LaThanhTrong/LVTN_Fruit_Vegetable_Recognition/pulls";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                v.getContext().startActivity(intent);
+            }
+        });
+
+        binding.contactMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"lathanhtrong322002@gmail.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "ViSFruitVeg App Feedback");
+                intent.putExtra(Intent.EXTRA_TEXT, "Dear developer,\n\nI would like to provide feedback on the ViSFruitVeg app. Here are my comments:\n\n");
+
+                try {
+                    v.getContext().startActivity(Intent.createChooser(intent, "Send email..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(v.getContext(), "No email app found.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -91,4 +91,8 @@
     <string name="confidence">Độ tin cậy</string>
     <string name="del_history">Xóa lịch sử</string>
     <string name="this_image">ảnh này</string>
+    <string name="support">Hỗ trợ</string>
+    <string name="reportBug">Báo cáo lỗi</string>
+    <string name="requestFeature">Yêu cầu tính năng</string>
+    <string name="contactMe">Liên hệ với chúng tôi</string>
 </resources>
