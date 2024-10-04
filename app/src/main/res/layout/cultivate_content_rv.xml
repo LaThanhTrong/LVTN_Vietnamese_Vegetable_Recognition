@@ -11,44 +11,54 @@
     android:background="@drawable/ripple4"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:text="Tomamto F1 Montavi"
-        android:fontFamily="@font/bevietnampro_medium"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:text="@string/plant"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnMore"
+            android:layout_width="20dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_more_black"
+            android:contentDescription="@string/more" />
+
+    </RelativeLayout>
+
+    <com.bluejamesbond.text.DocumentView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvName"
-        android:layout_marginTop="8dp"
-        android:text="This is a description"
-        android:fontFamily="@font/bevietnampro_medium"
-        android:textColor="@color/black"
-        android:textSize="13sp" />
+        app:documentView_textAlignment="justified"
+        app:documentView_antialias="true"
+        app:documentView_textSubPixel="true"
+        app:documentView_textFormat="plain"
+        app:documentView_textSize="15sp"
+        app:documentView_textColor="@color/black"
+        app:documentView_textTypefacePath="fonts/bevietnampro_regular.ttf"
+        android:layout_below="@id/title" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:scaleType="fitXY"
         android:layout_below="@id/tvDescription"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
         android:src="@drawable/tomato" />
-
-    <ImageButton
-        android:id="@+id/btnMore"
-        android:layout_width="20dp"
-        android:layout_height="45dp"
-        android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_more_black"
-        android:contentDescription="@string/more" />
 
 </RelativeLayout>

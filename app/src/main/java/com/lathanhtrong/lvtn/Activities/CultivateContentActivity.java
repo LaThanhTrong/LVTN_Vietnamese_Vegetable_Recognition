@@ -43,7 +43,7 @@ public class CultivateContentActivity extends AppCompatActivity {
     private void loadContent() {
         culcon = dbHandler.getCultivateContentbyId(culcon_id);
         if (culcon != null) {
-            String html = "Hello<br>"+culcon.getCulcon_html();
+            String html = culcon.getCulcon_html();
             String cul_name = "";
 
             switch (cul_id) {
@@ -89,7 +89,7 @@ public class CultivateContentActivity extends AppCompatActivity {
                 "src: url(\"file:///android_asset/fonts/bevietnampro_regular.ttf\");" +
                 "}" +
                 "body { font-family: 'BeVietnam'; font-size: 18px; text-align: justify;}" +
-                "img { width: 100%; height: auto; }" +
+                "img { width: 100%; height: auto; border-radius: 8px; }" +
                 "</style>";
 
         return style + html;
