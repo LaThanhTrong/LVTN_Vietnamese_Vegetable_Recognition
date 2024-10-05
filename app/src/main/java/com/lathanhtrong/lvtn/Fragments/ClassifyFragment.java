@@ -160,12 +160,14 @@ public class ClassifyFragment extends Fragment implements Classification.Classif
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.tvResClass.setText("");
         binding.tvResProb.setText("");
+        binding.tvLatency.setText("");
         predicationAdapter.clear();
         binding.ivMain.setImageBitmap(bitmap);
-        // Save image to internal storage
-        currentImageName = saveImageToInternalStorage(bitmap);
 
-        backgroundExecutor.submit(() -> imageClassification.invoke(bitmap));
+        backgroundExecutor.submit(() -> {
+            currentImageName = saveImageToInternalStorage(bitmap);
+            imageClassification.invoke(bitmap);
+        });
     }
 
     private String saveImageToInternalStorage(Bitmap bitmap) {
