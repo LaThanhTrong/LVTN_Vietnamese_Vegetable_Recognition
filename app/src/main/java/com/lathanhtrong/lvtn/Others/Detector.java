@@ -173,10 +173,10 @@ public class Detector {
 
     private List<BoundingBox> bestBox(float[] array) {
         String model = Utils.getModel(context);
-        if (model.equals(Values.YOLOv8n)) {
+        if (model.equals(Values.YOLOv8n) || model.equals(Values.YOLOCustom)) {
             return YOLOv8BBox(array);
         }
-        else if (model.equals(Values.YOLOv10n) || model.equals(Values.YOLOCustom)) {
+        else if (model.equals(Values.YOLOv10n)) {
             return YOLOv10BBox(array);
         }
         return new ArrayList<>();

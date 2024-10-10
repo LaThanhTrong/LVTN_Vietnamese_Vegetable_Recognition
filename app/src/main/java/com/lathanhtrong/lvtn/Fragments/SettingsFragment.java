@@ -59,7 +59,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void showModelDialog() {
-        final String[] models = {"YOLOv10-GhostNet","YOLOv8", "YOLOv10"};
+        final String[] models = {"YOLOv8-GhostNet","YOLOv8", "YOLOv10"};
         SharedPreferences preferences = getContext().getSharedPreferences("MODEL_SETTINGS", getContext().MODE_PRIVATE);
         int item = preferences.getInt("item", 0);
 
