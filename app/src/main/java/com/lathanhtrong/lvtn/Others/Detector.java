@@ -161,11 +161,16 @@ public class Detector {
 
         List<BoundingBox> bestBoxes = bestBox(output.getFloatArray());
         List<BoundingBox> limitedBestBoxes = bestBoxes.subList(0, Math.min(bestBoxes.size(), NUM_DETECTIONS));
+
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime;
 
         if (limitedBestBoxes.isEmpty()) {
             detectorListener.onEmptyDetect();
             return;
+        }
+
+        if (inferenceTime < 0) {
+            inferenceTime = 0;
         }
 
         detectorListener.onDetect(limitedBestBoxes, inferenceTime);
