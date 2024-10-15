@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:fontFamily="@font/bevietnampro_medium"
-                    android:text="@string/interference_time" />
+                    android:text="@string/inference_time" />
 
                 <TextView
                     android:id="@+id/inferenceTime"

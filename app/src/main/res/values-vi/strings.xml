@@ -23,7 +23,7 @@
     <string name="close">Đóng</string>
     <string name="model_config">Cấu hình mô hình</string>
     <string name="save">Lưu</string>
-    <string name="interference_time">Thời gian dự đoán: </string>
+    <string name="inference_time">Thời gian dự đoán: </string>
     <string name="confidence_threshold">Ngưỡng tin cậy</string>
     <string name="numberDetection">Số lượng phát hiện</string>
     <string name="prediction">Dự đoán:</string>

@@ -23,7 +23,7 @@
     <string name="close">Close</string>
     <string name="model_config">Model Configuration</string>
     <string name="save">Save</string>
-    <string name="interference_time">Interference Time: </string>
+    <string name="inference_time">Inference Time: </string>
     <string name="confidence_threshold">Confidence Threshold</string>
     <string name="numberDetection">Number of Detection</string>
     <string name="prediction">Prediction:</string>
