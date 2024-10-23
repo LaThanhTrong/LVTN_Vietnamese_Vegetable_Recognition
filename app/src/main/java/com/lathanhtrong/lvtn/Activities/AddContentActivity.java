@@ -7,19 +7,42 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.lathanhtrong.lvtn.DBHandler;
 import com.lathanhtrong.lvtn.Models.CultivateContent;
 import com.lathanhtrong.lvtn.Models.Item;
 import com.lathanhtrong.lvtn.R;
+import com.lathanhtrong.lvtn.Values;
 import com.lathanhtrong.lvtn.databinding.ActivityAddContentBinding;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +72,9 @@ public class AddContentActivity extends AppCompatActivity {
     private static final int CHOOSE_IMAGE_REQUEST = 2;
     private DBHandler dbHandler;
     private int culcon_id = -1;
+    private String uploadedImageUrl = null;
+    private List<String> uploadedHtmlImageUrls = new ArrayList<>();
+    private int uploadCounter = 0;
 
     public int getCulcon_id() {
         return culcon_id;
@@ -76,40 +103,49 @@ public class AddContentActivity extends AppCompatActivity {
         loadItemsList();
 
         if (culcon_id != -1) {
-            CultivateContent content = dbHandler.getCultivateContentbyId(culcon_id);
-            if (content == null) {
-                finish();
-            }
-            else{
-                binding.title.setText(getString(R.string.modify_content));
-                binding.culconNameEn.getEditText().setText(content.getCulcon_name());
-                binding.culconNameVi.getEditText().setText(content.getCulcon_nameVi());
-                binding.culconDescEn.getEditText().setText(content.getCulcon_description());
-                binding.culconDescVi.getEditText().setText(content.getCulcon_descriptionVi());
-                selectedCultivateId = String.valueOf(content.getCul_id());
-                selectedItemId = String.valueOf(content.getItem_id());
-                for (int i = 0; i < cultivateIdList.size(); i++) {
-                    if (cultivateIdList.get(i).equals(selectedCultivateId)) {
-                        selectedCultivateTitle = cultivateTitleList.get(i);
-                        binding.cbbCultivate.setText(selectedCultivateTitle);
-                        break;
+            DatabaseReference ref = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
+            ref.child(String.valueOf(culcon_id)).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    CultivateContent content = snapshot.getValue(CultivateContent.class);
+                    if (content == null) {
+                        finish();
+                    }
+                    else{
+                        binding.title.setText(getString(R.string.modify_content));
+                        binding.culconNameEn.getEditText().setText(content.getCulcon_name());
+                        binding.culconNameVi.getEditText().setText(content.getCulcon_nameVi());
+                        binding.culconDescEn.getEditText().setText(content.getCulcon_description());
+                        binding.culconDescVi.getEditText().setText(content.getCulcon_descriptionVi());
+                        selectedCultivateId = String.valueOf(content.getCul_id());
+                        selectedItemId = String.valueOf(content.getItem_id());
+                        for (int i = 0; i < cultivateIdList.size(); i++) {
+                            if (cultivateIdList.get(i).equals(selectedCultivateId)) {
+                                selectedCultivateTitle = cultivateTitleList.get(i);
+                                binding.cbbCultivate.setText(selectedCultivateTitle);
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < itemIdList.size(); i++) {
+                            if (itemIdList.get(i).equals(selectedItemId)) {
+                                selectedItemTitle = itemTitleList.get(i);
+                                binding.cbbItem.setText(selectedItemTitle);
+                                break;
+                            }
+                        }
+                        String htmlContent = content.getCulcon_html();
+                        extractImageUris(htmlContent);
+                        setHtmlWithScaledImages(htmlContent);
+                        imageChooseUri = Uri.parse(content.getCulcon_image());
+                        binding.chooseImageText.setText(getResources().getString(R.string.image_picked));
+
                     }
                 }
-                for (int i = 0; i < itemIdList.size(); i++) {
-                    if (itemIdList.get(i).equals(selectedItemId)) {
-                        selectedItemTitle = itemTitleList.get(i);
-                        binding.cbbItem.setText(selectedItemTitle);
-                        break;
-                    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
-                String htmlContent = content.getCulcon_html();
-                setHtmlWithScaledImages(htmlContent);
-                File imageFile = new File(getFilesDir(), "content_images/" + content.getCulcon_image() + ".png");
-                if (imageFile.exists()) {
-                    imageChooseUri = Uri.fromFile(imageFile);
-                    binding.chooseImageText.setText(getResources().getString(R.string.image_picked));
-                }
-            }
+            });
         }
 
         loadCustomFont();
@@ -216,24 +252,71 @@ public class AddContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                finish();
             }
         });
     }
 
-    private void setHtmlWithScaledImages(String htmlContent) {
-        String basePath = getFilesDir() + "/content_html_images/";
-        Pattern pattern = Pattern.compile("src=\"(.*?)\"");
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (!isFinishing()) {
+            finish();
+        }
+    }
+
+    private void extractImageUris(String htmlContent) {
+
+        String regex = "<img\\s+[^>]*src=[\"']([^\"']+)[\"'][^>]*>";
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(htmlContent);
-        StringBuffer modifiedHtml = new StringBuffer();
 
         while (matcher.find()) {
-            String fileName = matcher.group(1);
-            File imageFile = new File(basePath + fileName);
+            String url = matcher.group(1);
+            if (url != null) {
+                imagePickUriList.add(Uri.parse(url));
+            }
+        }
+    }
 
-            if (imageFile.exists()) {
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+    public interface OnImageDownloadedListener {
+        void onImageDownloaded(Bitmap bitmap);
+    }
+
+    private void downloadImageFromUrl(String imageUrl, OnImageDownloadedListener listener) {
+        Glide.with(this)
+                .asBitmap()
+                .load(imageUrl)
+                .placeholder(R.drawable.notfound)
+                .error(R.drawable.notfound)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        listener.onImageDownloaded(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        listener.onImageDownloaded(null);
+                    }
+
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        listener.onImageDownloaded(null);
+                    }
+                });
+    }
+
+    private void processNextImage(final Matcher matcher, final StringBuffer modifiedHtml) {
+        if (matcher.find()) {
+            String imageUrl = matcher.group(1);
+
+            downloadImageFromUrl(imageUrl, new OnImageDownloadedListener() {
+                @Override
+                public void onImageDownloaded(Bitmap bitmap) {
+                    if (isFinishing()) {
+                        return;
+                    }
+
                     if (bitmap != null) {
                         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
                         int screenWidth = (int) (displayMetrics.widthPixels / 3.4);
@@ -241,39 +324,52 @@ public class AddContentActivity extends AppCompatActivity {
                         int imageHeight = bitmap.getHeight();
                         int scaledHeight = (screenWidth * imageHeight) / imageWidth;
 
-                        // Replace the `src` with updated `src`, `width`, and `height` attributes
-                        String replacement = String.format("src=\"file:///%s\" width=\"%d\" height=\"%d\"",
-                                basePath + fileName, screenWidth, scaledHeight);
-                        matcher.appendReplacement(modifiedHtml, replacement);
-                        Uri imageUri = Uri.fromFile(imageFile);
-                        imagePickUriList.add(imageUri);
+                        try {
+                            String replacement = String.format("src=\"%s\" width=\"%d\" height=\"%d\"", imageUrl, screenWidth, scaledHeight);
+                            matcher.appendReplacement(modifiedHtml, replacement);
+                        } catch (IllegalStateException e) {
+                            e.printStackTrace();
+                            matcher.appendReplacement(modifiedHtml, matcher.group(0));
+                        }
+                    } else {
+                        matcher.appendReplacement(modifiedHtml, matcher.group(0));
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    processNextImage(matcher, modifiedHtml);
                 }
-            } else {
-                // If image file doesn't exist, keep the original `src`
-                String replacement = String.format("src=\"file:///%s\"", basePath + fileName);
-                matcher.appendReplacement(modifiedHtml, replacement);
+            });
+        } else {
+            try {
+                matcher.appendTail(modifiedHtml);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
             }
+            binding.editor.setHtml(modifiedHtml.toString());
         }
-        matcher.appendTail(modifiedHtml);
-        binding.editor.setHtml(modifiedHtml.toString());
+    }
+
+    private void setHtmlWithScaledImages(String htmlContent) {
+        Pattern pattern = Pattern.compile("src=\"(.*?)\"");
+        Matcher matcher = pattern.matcher(htmlContent);
+        StringBuffer modifiedHtml = new StringBuffer();
+        processNextImage(matcher, modifiedHtml);
     }
 
     private void removeImageFromEditor() {
         String htmlContent = binding.editor.getHtml();
-        Log.d("htmlContent", htmlContent);
         List<Uri> uriRemoveList = new ArrayList<>();
+
         if (htmlContent != null && !htmlContent.isEmpty()) {
+            htmlContent = Html.fromHtml(htmlContent).toString();
+
             for (Uri uri : imagePickUriList) {
-                String normalizedUri = uri.toString().replace("file:///", "file:////");
-                if (!htmlContent.contains(normalizedUri)) {
+                String uriString = uri.toString();
+                if (!htmlContent.contains(uriString)) {
                     uriRemoveList.add(uri);
                 }
             }
-            Log.d("uriRemoveList", uriRemoveList.toString());
             imagePickUriList.removeAll(uriRemoveList);
+
+            imagePickUriList = new ArrayList<>(new HashSet<>(imagePickUriList));
         }
     }
 
@@ -317,26 +413,26 @@ public class AddContentActivity extends AppCompatActivity {
     }
 
 
-    public String modifyHtmlString(String html, List<String> savedFileNames) {
+    public String modifyHtmlString(String html, List<String> imageUrls) {
         if (html != null && !html.isEmpty()) {
             // Remove width and height attributes
             html = html.replaceAll("\\s*width=\"\\d+\"\\s*", "");
             html = html.replaceAll("\\s*height=\"\\d+\"\\s*", "");
 
             int imgIndex = 0;
-            Pattern pattern = Pattern.compile("src=\"[^\"]+\""); // Match any src
+            Pattern pattern = Pattern.compile("src=\"[^\"]+\"");
             Matcher matcher = pattern.matcher(html);
             StringBuffer modifiedHtml = new StringBuffer();
 
-            while (matcher.find() && imgIndex < savedFileNames.size()) {
-                String replacement = "src=\"" + savedFileNames.get(imgIndex) + ".png\"";
+            while (matcher.find() && imgIndex < imageUrls.size()) {
+                String replacement = "src=\"" + imageUrls.get(imgIndex) + "\"";
                 matcher.appendReplacement(modifiedHtml, replacement);
                 imgIndex++;
             }
             matcher.appendTail(modifiedHtml);
             return modifiedHtml.toString();
             }
-        return html; // Return original HTML if no modifications were made
+        return html;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -412,23 +508,6 @@ public class AddContentActivity extends AppCompatActivity {
         }
     }
 
-    private String getImageFileNameFromUri(Uri uri) {
-        String fileName = null;
-        if (uri != null) {
-            String uriPath = uri.getPath();
-            if (uriPath != null) {
-                // Extract the filename from the URI path
-                fileName = uriPath.substring(uriPath.lastIndexOf('/') + 1);
-                // Remove the extension
-                int dotIndex = fileName.lastIndexOf('.');
-                if (dotIndex != -1) {
-                    fileName = fileName.substring(0, dotIndex); // Get the filename without the extension
-                }
-            }
-        }
-        return fileName;
-    }
-
     private boolean isContentEmpty(String html) {
         if (html == null || html.trim().isEmpty()) {
             return true;
@@ -469,71 +548,319 @@ public class AddContentActivity extends AppCompatActivity {
         return true;
     }
 
-    private String saveImageToInternalStorage(Uri imageUri, String directoryName, String baseName) {
-        try {
-            File directory = new File(getFilesDir(), directoryName);
-            if (!directory.exists()) {
-                directory.mkdir();
-            }
-
-            String fileName = generateUniqueImageName(directory, baseName);
-            File imageFile = new File(directory, fileName);
-
-            InputStream imageStream = getContentResolver().openInputStream(imageUri);
-            if (imageStream != null) {
-                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                FileOutputStream fos = new FileOutputStream(imageFile);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                fos.flush();
-                fos.close();
-
-                return fileName.substring(0, fileName.lastIndexOf('.'));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private List<String> saveImageListToInternalStorage(List<Uri> imageUriList, String directoryName) {
-        List<String> savedFileNames = new ArrayList<>();
-        Set<String> usedFileNames = new HashSet<>();
-
-        for (Uri imageUri : imageUriList) {
-            String baseName = getImageFileNameFromUri(imageUri).replaceAll("\\.png$", "");
-
-            if (usedFileNames.contains(baseName)) {
-                baseName = baseName + "_" + (System.currentTimeMillis() % 100);
-            }
-
-            String savedFileName = saveImageToInternalStorage(imageUri, directoryName, baseName);
-            if (savedFileName != null) {
-                savedFileNames.add(savedFileName);
-                usedFileNames.add(savedFileName);
-            }
-        }
-        return savedFileNames;
-    }
-
-    private String generateUniqueImageName(File directory, String baseName) {
-        String extension = ".png";
-        int counter = 0;
-        String imageName;
-
-        do {
-            imageName = baseName + (counter == 0 ? "" : "_" + counter) + extension;
-            counter++;
-        } while (new File(directory, imageName).exists());
-
-        return imageName;
-    }
-
     private String normalizeString(String input) {
         if (input == null) return null;
         String nfdNormalizedString = Normalizer.normalize(input, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(nfdNormalizedString).replaceAll("").replaceAll("đ", "d").replaceAll("Đ", "D").toLowerCase();
+    }
+
+    private Uri saveBitmapAsLocalFile(Bitmap bitmap) {
+        try {
+            File tempDir = new File(getFilesDir(), "temp");
+            if (!tempDir.exists()) {
+                tempDir.mkdir();
+            }
+
+            File file = new File(tempDir, "downloaded_image" + ".jpg");
+            FileOutputStream fos = new FileOutputStream(file, false);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            return Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void uploadFileToFirebase(Uri fileUri, List<Uri> imagePickUriList, ProgressDialog progressDialog) {
+        String imageFilePathAndName = "content_images/" + "image_" + System.currentTimeMillis();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(imageFilePathAndName);
+
+        storageReference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isSuccessful());
+                uploadedImageUrl = uriTask.getResult().toString();
+
+                uploadHtmlImages(imagePickUriList, progressDialog);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(AddContentActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveToFireBase(Uri imageChooseUri, List<Uri> imagePickUriList, ProgressDialog progressDialog) {
+        if (imageChooseUri.toString().startsWith("http")) {
+            downloadImageFromUrl(imageChooseUri.toString(), new OnImageDownloadedListener() {
+                @Override
+                public void onImageDownloaded(Bitmap bitmap) {
+                    if (bitmap != null) {
+                        Uri localUri = saveBitmapAsLocalFile(bitmap);
+                        if (localUri != null) {
+                            uploadFileToFirebase(localUri, imagePickUriList, progressDialog);
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddContentActivity.this, "Failed to save image locally", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        } else {
+            uploadFileToFirebase(imageChooseUri, imagePickUriList, progressDialog);
+        }
+    }
+
+    private int getLocalImageCount(List<Uri> imagePickUriList) {
+        int count = 0;
+        for (Uri uri : imagePickUriList) {
+            if (uri.toString().startsWith("content://")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private void addContent(CultivateContent content, ProgressDialog progressDialog) {
+        DatabaseReference ref = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
+        Query nameQuery = ref.orderByChild("cul_id").equalTo(content.getCul_id());
+        nameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean nameExists = false;
+                    boolean nameViExists = false;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String existingName = snapshot.child("culcon_name").getValue(String.class);
+                        String existingNameVi = snapshot.child("culcon_nameVi").getValue(String.class);
+
+                        if (existingName != null && existingName.equals(content.getCulcon_name())) {
+                            nameExists = true;
+
+                        }
+                        if (existingNameVi != null && existingNameVi.equals(content.getCulcon_nameVi())) {
+                            nameViExists = true;
+
+                        }
+                    }
+                    if (nameExists) {
+                        Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameExist), Toast.LENGTH_SHORT).show();
+                    }
+                    else if (nameViExists) {
+                        Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameViExist), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        long currentTimeMillis = System.currentTimeMillis();
+                        int id = (int) (currentTimeMillis % Integer.MAX_VALUE);
+                        content.setCulcon_id(id);
+                        ref.child(String.valueOf(id)).setValue(content).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AddContentActivity.this, getResources().getString(R.string.saveContentSuccess), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AddContentActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+                else {
+                    long currentTimeMillis = System.currentTimeMillis();
+                    int id = (int) (currentTimeMillis % Integer.MAX_VALUE);
+                    content.setCulcon_id(id);
+                    ref.child(String.valueOf(id)).setValue(content).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddContentActivity.this, getResources().getString(R.string.saveContentSuccess), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddContentActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddContentActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void modifyContent(CultivateContent content, ProgressDialog progressDialog) {
+        DatabaseReference ref = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
+        Query nameQuery = ref.orderByChild("cul_id").equalTo(content.getCul_id());
+        nameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean nameExists = false;
+                    boolean nameViExists = false;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String existingName = snapshot.child("culcon_name").getValue(String.class);
+                        String existingNameVi = snapshot.child("culcon_nameVi").getValue(String.class);
+                        int existingId = snapshot.child("culcon_id").getValue(Integer.class);
+
+                        if (existingName != null && existingName.equals(content.getCulcon_name()) && existingId != content.getCulcon_id()) {
+                            nameExists = true;
+                        }
+                        if (existingNameVi != null && existingNameVi.equals(content.getCulcon_nameVi()) && existingId != content.getCulcon_id()) {
+                            nameViExists = true;
+                        }
+                    }
+                    if (nameExists) {
+                        Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameExist), Toast.LENGTH_SHORT).show();
+                    } else if (nameViExists) {
+                        Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameViExist), Toast.LENGTH_SHORT).show();
+                    } else {
+                        ref.child(String.valueOf(content.getCulcon_id())).setValue(content).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AddContentActivity.this, getResources().getString(R.string.saveContentSuccess), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AddContentActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } else {
+                    ref.child(String.valueOf(content.getCulcon_id())).setValue(content).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddContentActivity.this, getResources().getString(R.string.saveContentSuccess), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddContentActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddContentActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void uploadHtmlImages(List<Uri> imagePickUriList, ProgressDialog progressDialog) {
+        int localImageCount = getLocalImageCount(imagePickUriList);
+        if (localImageCount == 0) {
+            String htmlContent = binding.editor.getHtml();
+            htmlContent = modifyHtmlString(htmlContent, uploadedHtmlImageUrls);
+            int cul_id = Integer.parseInt(selectedCultivateId);
+            int item_id = Integer.parseInt(selectedItemId);
+            String culcon_name = binding.culconNameEn.getEditText().getText().toString();
+            String culcon_nameVi = binding.culconNameVi.getEditText().getText().toString();
+            String culcon_nameVi2 = normalizeString(culcon_nameVi);
+            String culcon_description = binding.culconDescEn.getEditText().getText().toString();
+            String culcon_descriptionVi = binding.culconDescVi.getEditText().getText().toString();
+            String culcon_image = uploadedImageUrl;
+            String culcon_html = htmlContent;
+
+            if (getCulcon_id() == -1) {
+                // Insert
+                CultivateContent content = new CultivateContent(cul_id, item_id, culcon_name, culcon_nameVi, culcon_nameVi2, culcon_description, culcon_descriptionVi, culcon_image, culcon_html);
+                addContent(content, progressDialog);
+            }
+            else {
+                // Update
+                CultivateContent content = new CultivateContent(getCulcon_id(), cul_id, item_id, culcon_name, culcon_nameVi, culcon_nameVi2, culcon_description, culcon_descriptionVi, culcon_image, culcon_html);
+                modifyContent(content, progressDialog);
+            }
+            progressDialog.dismiss();
+            return;
+        }
+
+        uploadedHtmlImageUrls = new ArrayList<>(Collections.nCopies(imagePickUriList.size(), ""));
+        uploadCounter = 0;
+
+        for (int i = 0; i < imagePickUriList.size(); i++) {
+            Uri imageUri = imagePickUriList.get(i);
+
+            if (imageUri.toString().startsWith("content://")) {
+                int finalI = i;
+                String htmlImagesFilePathAndName = "content_html_images/" + "image_" + System.currentTimeMillis();
+                StorageReference listStorageReference = FirebaseStorage.getInstance().getReference(htmlImagesFilePathAndName);
+
+                listStorageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String uploadedListImageUrl = uri.toString();
+                                uploadedHtmlImageUrls.set(finalI, uploadedListImageUrl);
+                                uploadCounter++;
+
+                                if (uploadCounter == getLocalImageCount(imagePickUriList)) {
+                                    String htmlContent = binding.editor.getHtml();
+                                    htmlContent = modifyHtmlString(htmlContent, uploadedHtmlImageUrls);
+                                    int cul_id = Integer.parseInt(selectedCultivateId);
+                                    int item_id = Integer.parseInt(selectedItemId);
+                                    String culcon_name = binding.culconNameEn.getEditText().getText().toString();
+                                    String culcon_nameVi = binding.culconNameVi.getEditText().getText().toString();
+                                    String culcon_nameVi2 = normalizeString(culcon_nameVi);
+                                    String culcon_description = binding.culconDescEn.getEditText().getText().toString();
+                                    String culcon_descriptionVi = binding.culconDescVi.getEditText().getText().toString();
+                                    String culcon_image = uploadedImageUrl;
+                                    String culcon_html = htmlContent;
+
+                                    if (getCulcon_id() == -1) {
+                                        // Insert
+                                        CultivateContent content = new CultivateContent(cul_id, item_id, culcon_name, culcon_nameVi, culcon_nameVi2, culcon_description, culcon_descriptionVi, culcon_image, culcon_html);
+                                        addContent(content, progressDialog);
+
+                                    }
+                                    else {
+                                        // Update
+                                        CultivateContent content = new CultivateContent(getCulcon_id(), cul_id, item_id, culcon_name, culcon_nameVi, culcon_nameVi2, culcon_description, culcon_descriptionVi, culcon_image, culcon_html);
+                                        modifyContent(content, progressDialog);
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(AddContentActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else {
+                String uploadedListImageUrl = imageUri.toString();
+                uploadedHtmlImageUrls.set(i, uploadedListImageUrl);
+            }
+        }
     }
 
     private void saveContent() {
@@ -543,52 +870,13 @@ public class AddContentActivity extends AppCompatActivity {
         progressDialog.show();
 
         removeImageFromEditor();
+
         if (!validateInput()) {
             progressDialog.dismiss();
             return;
         }
-        String htmlContent = binding.editor.getHtml();
-        String fileName = getImageFileNameFromUri(imageChooseUri);
 
-        String imageFileName = saveImageToInternalStorage(imageChooseUri, "content_images", fileName);
-        if (imageFileName == null) {
-            progressDialog.dismiss();
-            return;
-        }
-
-        ArrayList<String> imageFileNames = new ArrayList<>();
-        if (!imagePickUriList.isEmpty()) {
-            imageFileNames = (ArrayList<String>) saveImageListToInternalStorage(imagePickUriList, "content_html_images");
-        }
-
-        htmlContent = modifyHtmlString(htmlContent, imageFileNames);
-        Log.d("imagePickUriList", imagePickUriList.toString());
-        Log.d("imageFileNames", imageFileNames.toString());
-        Log.d("saveContent", "saveContent: " + htmlContent);
-        int cul_id = Integer.parseInt(selectedCultivateId);
-        int item_id = Integer.parseInt(selectedItemId);
-        String culcon_name = binding.culconNameEn.getEditText().getText().toString();
-        String culcon_nameVi = binding.culconNameVi.getEditText().getText().toString();
-        String culcon_nameVi2 = normalizeString(culcon_nameVi);
-        String culcon_description = binding.culconDescEn.getEditText().getText().toString();
-        String culcon_descriptionVi = binding.culconDescVi.getEditText().getText().toString();
-        String culcon_html = htmlContent;
-
-        long res;
-        if (getCulcon_id() == -1) {
-            CultivateContent content = new CultivateContent(cul_id, item_id, culcon_name, culcon_nameVi, culcon_nameVi2, culcon_description, culcon_descriptionVi, imageFileName, culcon_html);
-            res = dbHandler.addCultivateContent(content);
-        }
-        else {
-            CultivateContent content = new CultivateContent(getCulcon_id(), cul_id, item_id, culcon_name, culcon_nameVi, culcon_nameVi2, culcon_description, culcon_descriptionVi, imageFileName, culcon_html);
-            res = dbHandler.modifyCultivateContent(content);
-        }
-        progressDialog.dismiss();
-        if (res != -1) {
-            Toast.makeText(this, getString(R.string.saveContentSuccess), Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(this, getString(R.string.saveContentFail), Toast.LENGTH_SHORT).show();
-        }
+        extractImageUris(binding.editor.getHtml());
+        saveToFireBase(imageChooseUri, imagePickUriList, progressDialog);
     }
 }

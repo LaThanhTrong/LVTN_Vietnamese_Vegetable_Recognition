@@ -7,4 +7,6 @@ public class Values {
     public static final String YOLOCustom = "yolov8n-ghost.tflite";
     public static final String Confidence = "30";
     public static final String NumClass = "100";
+    public static final String region = "https://lvtn-dbf97-default-rtdb.asia-southeast1.firebasedatabase.app";
+
 }

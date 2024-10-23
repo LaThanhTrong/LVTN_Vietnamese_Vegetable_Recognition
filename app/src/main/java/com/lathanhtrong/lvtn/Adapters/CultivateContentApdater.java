@@ -3,29 +3,28 @@ package com.lathanhtrong.lvtn.Adapters;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lathanhtrong.lvtn.Activities.AddContentActivity;
 import com.lathanhtrong.lvtn.Activities.CultivateContentActivity;
-import com.lathanhtrong.lvtn.DBHandler;
 import com.lathanhtrong.lvtn.Models.Cultivate;
 import com.lathanhtrong.lvtn.Models.CultivateContent;
 import com.lathanhtrong.lvtn.Others.Utils;
 import com.lathanhtrong.lvtn.R;
+import com.lathanhtrong.lvtn.Values;
 import com.lathanhtrong.lvtn.databinding.CultivateContentRvBinding;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CultivateContentApdater extends RecyclerView.Adapter<CultivateContentApdater.ViewHolder> {
 
@@ -51,14 +50,9 @@ public class CultivateContentApdater extends RecyclerView.Adapter<CultivateConte
             holder.binding.tvDescription.setText(items.get(position).getCulcon_description());
         }
 
-        File imageFile = new File(holder.itemView.getContext().getFilesDir(), "content_images/" + items.get(position).getCulcon_image() + ".png");
-        if (imageFile.exists()) {
-            Glide.with(holder.itemView.getContext())
-                    .load(imageFile)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(holder.binding.ivImage);
-        }
+        Glide.with(holder.itemView.getContext())
+                .load(items.get(position).getCulcon_image())
+                .into(holder.binding.ivImage);
 
         holder.binding.getRoot().setOnClickListener(v -> {
             int culcon_id = items.get(holder.getAdapterPosition()).getCulcon_id();
@@ -114,37 +108,20 @@ public class CultivateContentApdater extends RecyclerView.Adapter<CultivateConte
                                     progressDialog.setCanceledOnTouchOutside(false);
                                     progressDialog.setCancelable(false);
 
-                                    DBHandler dbHandler = new DBHandler(holder.itemView.getContext());
-                                    String fileImage = items.get(holder.getAdapterPosition()).getCulcon_image();
-                                    String html = items.get(holder.getAdapterPosition()).getCulcon_html();
-
-                                    dbHandler.deleteCultivateContent(culcon_id);
-                                    progressDialog.dismiss();
-
-                                    progressDialog.setMessage(v.getResources().getString(R.string.delContentStorage));
-                                    progressDialog.show();
-                                    progressDialog.setCanceledOnTouchOutside(false);
-                                    progressDialog.setCancelable(false);
-                                    File imageFile = new File(holder.itemView.getContext().getFilesDir(), "content_images/" + fileImage + ".png");
-                                    if (imageFile.exists()) {
-                                        imageFile.delete();
-                                    }
-
-                                    Pattern pattern = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
-                                    Matcher matcher = pattern.matcher(html);
-                                    while (matcher.find()) {
-                                        String fileName = matcher.group(1);
-                                        File htmlImageFile = new File(holder.itemView.getContext().getFilesDir(), "content_html_images/" + fileName);
-                                        if (htmlImageFile.exists()) {
-                                            htmlImageFile.delete();
+                                    DatabaseReference reference = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
+                                    reference.child(String.valueOf(culcon_id)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(holder.itemView.getContext(), v.getResources().getString(R.string.delContentSuccess), Toast.LENGTH_SHORT).show();
                                         }
-                                    }
-
-                                    items.remove(holder.getAdapterPosition());
-                                    notifyItemRemoved(holder.getAdapterPosition());
-                                    notifyItemRangeChanged(holder.getAdapterPosition(), items.size());
-                                    progressDialog.dismiss();
-                                    Toast.makeText(holder.itemView.getContext(), v.getResources().getString(R.string.delContentSuccess), Toast.LENGTH_SHORT).show();
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(holder.itemView.getContext(), v.getResources().getString(R.string.delContentFail), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             }).setNegativeButton(v.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                                 @Override

@@ -37,6 +37,10 @@ public class CultivateContent {
         this.culcon_html = culcon_html;
     }
 
+    public CultivateContent() {
+
+    }
+
     public int getCulcon_id() {
         return culcon_id;
     }

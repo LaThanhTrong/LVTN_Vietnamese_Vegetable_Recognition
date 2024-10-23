@@ -275,9 +275,6 @@ public class CameraFragment extends Fragment implements Detector.DetectorListene
     private void setBottomSheet() {
         View bottomSheet = binding.llSheet;
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
-//        bottomSheetBehavior.setPeekHeight(200);
-
         WindowManager windowManager = (WindowManager) requireContext().getSystemService(Context.WINDOW_SERVICE);
         if (windowManager != null) {
             int screenHeight = windowManager.getDefaultDisplay().getHeight();

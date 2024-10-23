@@ -7,11 +7,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lathanhtrong.lvtn.Adapters.CultivateApdater;
 import com.lathanhtrong.lvtn.Adapters.CultivateContentApdater;
 import com.lathanhtrong.lvtn.DBHandler;
@@ -19,6 +25,7 @@ import com.lathanhtrong.lvtn.Models.Cultivate;
 import com.lathanhtrong.lvtn.Models.CultivateContent;
 import com.lathanhtrong.lvtn.Models.Item;
 import com.lathanhtrong.lvtn.R;
+import com.lathanhtrong.lvtn.Values;
 import com.lathanhtrong.lvtn.databinding.ActivityCultivateBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,15 +103,28 @@ public class CultivateActivity extends AppCompatActivity implements CultivateApd
     }
 
     private void loadCultivationContent() {
-        cultivateContents = dbHandler.getCultivateContentsByItem(cul_id, item_id);
-        RecyclerView recyclerViewCultivateContent = binding.rvCultivateContent;
-        if (cultivateContents != null) {
-            CultivateContentApdater adapterCultivateContent = new CultivateContentApdater(cultivateContents);
-            recyclerViewCultivateContent.setAdapter(adapterCultivateContent);
-        }
-        else {
-            Log.d("CultivateActivity", "loadCultivationContent: cultivateContents is null");
-        }
+        DatabaseReference ref = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
+        ref.orderByChild("cul_id").equalTo(cul_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cultivateContents.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    CultivateContent cc = ds.getValue(CultivateContent.class);
+                    if (cc.getItem_id() == item_id) {
+                        cultivateContents.add(cc);
+                    }
+                }
+                RecyclerView recyclerViewCultivateContent = binding.rvCultivateContent;
+                CultivateContentApdater adapterCultivateContent = new CultivateContentApdater(cultivateContents);
+                recyclerViewCultivateContent.setAdapter(adapterCultivateContent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CultivateActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void loadItem() {
