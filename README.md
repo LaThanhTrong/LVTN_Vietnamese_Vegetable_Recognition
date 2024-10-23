@@ -1,3 +1,3 @@
-# Vietnamese Fruit and Vegetable Recognition
+# Vietnamese Vegetable Recognition
 
-A simple Vietnamese Fruit and Vegetable Recognition on Android devices
+A simple Vietnamese Vegetable Recognition on Android devices
