@@ -632,33 +632,35 @@ public class AddContentActivity extends AppCompatActivity {
     private void addContent(CultivateContent content, ProgressDialog progressDialog) {
         DatabaseReference ref = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
         Query nameQuery = ref.orderByChild("cul_id").equalTo(content.getCul_id());
+
         nameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    boolean nameExists = false;
-                    boolean nameViExists = false;
+                    boolean combinationExistsEn = false;
+                    boolean combinationExistsVi = false;
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Integer existingItemId = snapshot.child("item_id").getValue(Integer.class);
                         String existingName = snapshot.child("culcon_name").getValue(String.class);
                         String existingNameVi = snapshot.child("culcon_nameVi").getValue(String.class);
 
-                        if (existingName != null && existingName.equals(content.getCulcon_name())) {
-                            nameExists = true;
-
+                        if (existingItemId != null && existingItemId.equals(content.getItem_id()) &&
+                                existingName != null && existingName.equals(content.getCulcon_name())) {
+                            combinationExistsEn = true;
                         }
-                        if (existingNameVi != null && existingNameVi.equals(content.getCulcon_nameVi())) {
-                            nameViExists = true;
 
+                        if (existingItemId != null && existingItemId.equals(content.getItem_id()) &&
+                                existingNameVi != null && existingNameVi.equals(content.getCulcon_nameVi())) {
+                            combinationExistsVi = true;
                         }
                     }
-                    if (nameExists) {
+
+                    if (combinationExistsEn) {
                         Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameExist), Toast.LENGTH_SHORT).show();
-                    }
-                    else if (nameViExists) {
+                    } else if (combinationExistsVi) {
                         Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameViExist), Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         long currentTimeMillis = System.currentTimeMillis();
                         int id = (int) (currentTimeMillis % Integer.MAX_VALUE);
                         content.setCulcon_id(id);
@@ -676,8 +678,8 @@ public class AddContentActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }
-                else {
+
+                } else {
                     long currentTimeMillis = System.currentTimeMillis();
                     int id = (int) (currentTimeMillis % Integer.MAX_VALUE);
                     content.setCulcon_id(id);
@@ -707,28 +709,35 @@ public class AddContentActivity extends AppCompatActivity {
     private void modifyContent(CultivateContent content, ProgressDialog progressDialog) {
         DatabaseReference ref = FirebaseDatabase.getInstance(Values.region).getReference("CultivateContent");
         Query nameQuery = ref.orderByChild("cul_id").equalTo(content.getCul_id());
+
         nameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    boolean nameExists = false;
-                    boolean nameViExists = false;
+                    boolean combinationExistsEn = false;
+                    boolean combinationExistsVi = false;
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String existingName = snapshot.child("culcon_name").getValue(String.class);
                         String existingNameVi = snapshot.child("culcon_nameVi").getValue(String.class);
-                        int existingId = snapshot.child("culcon_id").getValue(Integer.class);
+                        Integer existingItemId = snapshot.child("item_id").getValue(Integer.class);
+                        Integer existingId = snapshot.child("culcon_id").getValue(Integer.class);
 
-                        if (existingName != null && existingName.equals(content.getCulcon_name()) && existingId != content.getCulcon_id()) {
-                            nameExists = true;
+                        if (existingItemId != null && existingItemId.equals(content.getItem_id()) &&
+                                existingName != null && existingName.equals(content.getCulcon_name()) &&
+                                existingId != null && !existingId.equals(content.getCulcon_id())) {
+                            combinationExistsEn = true;
                         }
-                        if (existingNameVi != null && existingNameVi.equals(content.getCulcon_nameVi()) && existingId != content.getCulcon_id()) {
-                            nameViExists = true;
+
+                        if (existingItemId != null && existingItemId.equals(content.getItem_id()) &&
+                                existingNameVi != null && existingNameVi.equals(content.getCulcon_nameVi()) &&
+                                existingId != null && !existingId.equals(content.getCulcon_id())) {
+                            combinationExistsVi = true;
                         }
                     }
-                    if (nameExists) {
+                    if (combinationExistsEn) {
                         Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameExist), Toast.LENGTH_SHORT).show();
-                    } else if (nameViExists) {
+                    } else if (combinationExistsVi) {
                         Toast.makeText(AddContentActivity.this, getResources().getString(R.string.err_insert_contentNameViExist), Toast.LENGTH_SHORT).show();
                     } else {
                         ref.child(String.valueOf(content.getCulcon_id())).setValue(content).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -761,6 +770,7 @@ public class AddContentActivity extends AppCompatActivity {
                     });
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(AddContentActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
