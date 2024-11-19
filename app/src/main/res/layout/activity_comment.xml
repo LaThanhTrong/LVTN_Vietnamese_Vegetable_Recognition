@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activities.CommentActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:src="@drawable/arrow_back_icon"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            app:tint="@color/black"
+            android:contentDescription="Return" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comment"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            tools:ignore="RelativeOverlap" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:src="@drawable/user" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F0FFFF"
+        android:layout_margin="18dp"
+        android:layout_below="@+id/toolbar" >
+
+        <EditText
+            android:id="@+id/writeComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/send"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:scrollbars="vertical"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:singleLine="false"
+            android:fontFamily="@font/bevietnampro_regular"
+            android:background="@drawable/corner_border"
+            android:backgroundTint="#F0FFFF"
+            android:textColorHint="@color/black"
+            android:hint="@string/write_comment" />
+
+        <ImageButton
+            android:id="@+id/send"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="18dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/send_icon"
+            android:backgroundTint="@color/black"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/all_comments"
+        android:layout_below="@+id/comment_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_comments"
+        android:textSize="16sp"
+        android:fontFamily="@font/bevietnampro_medium"
+        android:textColor="@color/black"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="6dp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comment_rv"
+        android:layout_below="@+id/all_comments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="18dp"
+        android:orientation="vertical" />
+
+</RelativeLayout>

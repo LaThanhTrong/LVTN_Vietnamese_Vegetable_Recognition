@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context=".Activities.AddPostActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:src="@drawable/arrow_back_icon"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            app:tint="@color/black"
+            android:contentDescription="Return" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_post"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            tools:ignore="RelativeOverlap" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:src="@drawable/user" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="25dp"
+        android:layout_below="@+id/toolbar">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv2"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/user"
+            android:layout_marginEnd="15dp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:layout_centerVertical="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_toEndOf="@+id/profileIv2">
+
+            <TextView
+                android:id="@+id/usernameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="Username"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/emailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="Email"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/bevietnampro_regular" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/cbbItem"
+        android:layout_below="@+id/rlUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginVertical="7dp"
+        android:layout_marginHorizontal="20dp"
+        android:drawablePadding="20dp"
+        android:background="@drawable/corner_border"
+        android:gravity="center_vertical"
+        android:hint="@string/plant"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textColorHint="@color/black"
+        android:fontFamily="@font/bevietnampro_regular"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+        app:drawableStartCompat="@drawable/plant_icon" />
+
+    <EditText
+        android:id="@+id/descEt"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/cbbItem"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:scrollbars="vertical"
+        android:layout_margin="18dp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="15dp"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:singleLine="false"
+        android:fontFamily="@font/bevietnampro_regular"
+        android:background="@drawable/corner_border"
+        android:hint="@string/post_desc" />
+
+    <RelativeLayout
+        android:id="@+id/imageLayout"
+        android:layout_below="@+id/descEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp">
+
+        <ImageButton
+            android:id="@+id/image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_icon"
+            android:contentDescription="@string/choose_image" />
+
+        <TextView
+            android:id="@+id/chooseImageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_image"
+            android:layout_centerInParent="true"
+            android:textSize="16sp"
+            android:fontFamily="@font/bevietnampro_regular"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="5dp"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:text="@string/save"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/bevietnampro_medium"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/emerald" />
+
+</RelativeLayout>
+

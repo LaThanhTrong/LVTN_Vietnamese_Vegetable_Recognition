@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.exifinterface)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -61,6 +62,10 @@ dependencies {
     implementation("jp.wasabeef:richeditor-android:2.0.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("com.otaliastudios:zoomlayout:1.9.0")
+    implementation ("com.firebaseui:firebase-ui-database:8.0.2")
 
     val cameraxVersion = "1.4.0-beta02"
     implementation("androidx.camera:camera-camera2:${cameraxVersion}")

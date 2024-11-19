@@ -330,7 +330,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../Applications/AndroidSDK/icons/material/materialicons/arrow_forward/baseline_arrow_forward_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../Applications/AndroidSDK/icons/material/materialicons/send/baseline_send_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -341,7 +341,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_arrow_right" />
+                            <entry key="outputName" value="send_icon" />
                             <entry key="sourceFile" value="E:\Online\LVTN\App" />
                           </map>
                         </option>

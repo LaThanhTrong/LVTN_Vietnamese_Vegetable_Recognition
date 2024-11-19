@@ -35,6 +35,7 @@ import com.lathanhtrong.lvtn.Activities.DetectionActivity;
 import com.lathanhtrong.lvtn.Activities.FilterDetectionActivity;
 import com.lathanhtrong.lvtn.Activities.HistoryRecognitionActivity;
 import com.lathanhtrong.lvtn.Activities.MainActivity;
+import com.lathanhtrong.lvtn.Activities.ViewPostsActivity;
 import com.lathanhtrong.lvtn.Others.Utils;
 import com.lathanhtrong.lvtn.R;
 import com.lathanhtrong.lvtn.databinding.FragmentHomeBinding;
@@ -242,6 +243,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireContext(), HistoryRecognitionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnComm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), ViewPostsActivity.class);
                 startActivity(intent);
             }
         });

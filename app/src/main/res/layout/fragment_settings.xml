@@ -80,6 +80,40 @@
             android:backgroundTint="#808080"
             android:text="@string/model_config"/>
 
+        <Button
+            android:id="@+id/modelLoginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/modelConfigBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="visible"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="5dp"
+            android:backgroundTint="#808080"
+            android:text="@string/login_with_google"/>
+
+        <Button
+            android:id="@+id/modelSignOutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/modelConfigBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:textSize="13sp"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="5dp"
+            android:backgroundTint="#808080"
+            android:text="@string/logout"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

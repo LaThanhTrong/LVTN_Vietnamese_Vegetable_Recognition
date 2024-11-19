@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingHorizontal="30dp"
+    android:paddingTop="20dp"
+    android:elevation="1dp"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/ripple4"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:src="@drawable/plant_icon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/ivIcon">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="@string/plant"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:textSize="12sp"
+                android:textColor="#36454F"
+                android:text="09/09/2002" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            android:background="@drawable/shapebutton"
+            android:backgroundTint="#DC143C"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="0dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_bg2"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="13dp"
+        android:layout_below="@id/title">
+
+        <ImageView
+            android:id="@+id/itemIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/tomato_clip" />
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_toEndOf="@+id/itemIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/bevietnampro_medium"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="@string/plant" />
+
+    </RelativeLayout>
+
+    <com.bluejamesbond.text.DocumentView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:documentView_textAlignment="justified"
+        app:documentView_antialias="true"
+        app:documentView_textSubPixel="true"
+        app:documentView_textFormat="plain"
+        app:documentView_textSize="15sp"
+        app:documentView_textColor="@color/black"
+        app:documentView_textTypefacePath="fonts/bevietnampro_regular.ttf"
+        android:layout_below="@id/item" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        android:layout_below="@id/tvDescription"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+        android:src="@drawable/tomato" />
+
+    <RelativeLayout
+        android:id="@+id/likeComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:layout_below="@+id/ivImage">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/like"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/like" />
+
+            <TextView
+                android:id="@+id/likeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textSize="13sp"
+                android:textColor="#36454F"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/like"
+                android:text="0" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/commentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="13sp"
+            android:text="0 comments"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/bevietnampro_regular"
+            android:textColor="#36454F" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/likeComment"
+        android:background="#D3D3D3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/divider">
+
+        <LinearLayout
+            android:id="@+id/like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:gravity="center|center_vertical">
+
+            <ImageButton
+                android:id="@+id/like_btn_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/like2" />
+
+            <TextView
+                android:id="@+id/like_btn_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#36454F"
+                android:textSize="13sp"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:text="@string/like" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_weight="1"
+            android:gravity="center|center_vertical">
+
+            <ImageButton
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/comment" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#36454F"
+                android:textSize="13sp"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:text="@string/comment" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

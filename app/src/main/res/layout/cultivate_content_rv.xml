@@ -23,6 +23,7 @@
             android:textSize="17sp"
             android:layout_centerVertical="true"
             android:textColor="@color/black"
+            android:paddingVertical="10dp"
             android:text="@string/plant"
             android:fontFamily="@font/bevietnampro_medium"
             android:textStyle="bold" />
@@ -32,6 +33,7 @@
             android:layout_width="20dp"
             android:layout_height="45dp"
             android:layout_alignParentEnd="true"
+            android:visibility="gone"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_more_black"
             android:contentDescription="@string/more" />

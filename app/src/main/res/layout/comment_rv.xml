@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:src="@drawable/user" />
+
+        <RelativeLayout
+            android:background="@drawable/corner_border"
+            android:layout_marginHorizontal="12dp"
+            android:backgroundTint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="title"
+                android:textColor="@color/black"
+                android:fontFamily="@font/bevietnampro_medium"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtTitle"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:textSize="12sp"
+                android:text="01/01/2002" />
+
+            <TextView
+                android:id="@+id/txtContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="6dp"
+                android:text="content"
+                android:textColor="@color/black"
+                android:layout_below="@+id/txtTime"
+                android:fontFamily="@font/bevietnampro_regular"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone"
+                android:background="@drawable/shapebutton"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="0dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

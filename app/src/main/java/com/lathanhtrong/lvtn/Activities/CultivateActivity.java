@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,9 +38,27 @@ public class CultivateActivity extends AppCompatActivity implements CultivateApd
     private DBHandler dbHandler;
     ArrayList<CultivateContent> cultivateContents = new ArrayList<>();
     int item_id = -1; int cul_id = -1;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public void setItems(Item items) {
         this.items = items;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (auth.getCurrentUser() == null) {
+            binding.addBtn.setVisibility(View.GONE);
+        }
+        else {
+            if (Values.admin.contains(auth.getCurrentUser().getEmail())) {
+                binding.addBtn.setVisibility(View.VISIBLE);
+            }
+            else {
+                binding.addBtn.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override

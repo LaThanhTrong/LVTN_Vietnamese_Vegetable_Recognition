@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,6 +76,7 @@ public class AddContentActivity extends AppCompatActivity {
     private String uploadedImageUrl = null;
     private List<String> uploadedHtmlImageUrls = new ArrayList<>();
     private int uploadCounter = 0;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public int getCulcon_id() {
         return culcon_id;
@@ -82,6 +84,20 @@ public class AddContentActivity extends AppCompatActivity {
 
     public void setCulcon_id(int culcon_id) {
         this.culcon_id = culcon_id;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (auth.getCurrentUser() == null) {
+            finish();
+        }
+        else {
+            if (!Values.admin.contains(auth.getCurrentUser().getEmail())) {
+                finish();
+            }
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lathanhtrong.lvtn.Activities.AddContentActivity;
@@ -29,6 +30,7 @@ import java.util.List;
 public class CultivateContentApdater extends RecyclerView.Adapter<CultivateContentApdater.ViewHolder> {
 
     private List<CultivateContent> items = new ArrayList<>();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public CultivateContentApdater(List<CultivateContent> items) {
         this.items = items;
@@ -41,6 +43,19 @@ public class CultivateContentApdater extends RecyclerView.Adapter<CultivateConte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        if (auth.getCurrentUser() == null) {
+            holder.binding.btnMore.setVisibility(View.GONE);
+        }
+        else {
+            if (Values.admin.contains(auth.getCurrentUser().getEmail())) {
+                holder.binding.btnMore.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.binding.btnMore.setVisibility(View.GONE);
+            }
+        }
+
         if (Utils.getLanguage(holder.itemView.getContext()).equals("vi")) {
             holder.binding.tvName.setText(items.get(position).getCulcon_nameVi());
             holder.binding.tvDescription.setText(items.get(position).getCulcon_descriptionVi());
@@ -66,6 +81,12 @@ public class CultivateContentApdater extends RecyclerView.Adapter<CultivateConte
         holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (auth.getCurrentUser() == null) {
+                    return;
+                }
+                if (!Values.admin.contains(auth.getCurrentUser().getEmail())) {
+                    return;
+                }
                 String[] options = {v.getResources().getString(R.string.edit), v.getResources().getString(R.string.delete)};
                 AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
                 ProgressDialog progressDialog = new ProgressDialog(holder.itemView.getContext());
@@ -88,6 +109,12 @@ public class CultivateContentApdater extends RecyclerView.Adapter<CultivateConte
                             holder.itemView.getContext().startActivity(intent);
                         }
                         else {
+                            if (auth.getCurrentUser() == null) {
+                                return;
+                            }
+                            if (!Values.admin.contains(auth.getCurrentUser().getEmail())) {
+                                return;
+                            }
                             ArrayList<Cultivate> cultivate = new ArrayList<>();
                             cultivate.add(new Cultivate(1, v.getResources().getString(R.string.cultivar)));
                             cultivate.add(new Cultivate(2, v.getResources().getString(R.string.landscape)));
