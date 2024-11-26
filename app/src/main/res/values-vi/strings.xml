@@ -124,4 +124,8 @@
     <string name="delete_post_confirm">Bạn có chắc chắn muốn xóa bài viết này?</string>
     <string name="deleling_post">Đang xóa bài viết...</string>
     <string name="post_deleted">Bài viết đã được xóa</string>
+    <string name="image_quality">Chất lượng ảnh</string>
+    <string name="low">Thấp</string>
+    <string name="medium">Trung bình</string>
+    <string name="high">Cao</string>
 </resources>

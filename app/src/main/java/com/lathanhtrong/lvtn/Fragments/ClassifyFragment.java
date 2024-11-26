@@ -27,6 +27,7 @@ import com.lathanhtrong.lvtn.Prediction;
 import com.lathanhtrong.lvtn.Others.Classification;
 import com.lathanhtrong.lvtn.Others.OrientationLiveData;
 import com.lathanhtrong.lvtn.Others.Utils;
+import com.lathanhtrong.lvtn.R;
 import com.lathanhtrong.lvtn.Values;
 import com.lathanhtrong.lvtn.databinding.FragmentClassifyBinding;
 import java.io.File;
@@ -161,13 +162,32 @@ public class ClassifyFragment extends Fragment implements Classification.Classif
         binding.tvResClass.setText("");
         binding.tvResProb.setText("");
         binding.tvLatency.setText("");
+        binding.tvQuality.setText("");
         predicationAdapter.clear();
         binding.ivMain.setImageBitmap(bitmap);
+
+        String quality = getImageQuality(bitmap);
+        binding.tvQuality.setText(getContext().getResources().getString(R.string.image_quality) + ": " + quality);
 
         backgroundExecutor.submit(() -> {
             currentImageName = saveImageToInternalStorage(bitmap);
             imageClassification.invoke(bitmap);
         });
+    }
+
+    private String getImageQuality(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        int totalPixels = width * height;
+
+        if (totalPixels <= 640 * 480) {
+            return getContext().getString(R.string.low) + " (" + width + "x" + height + ")";
+        } else if (totalPixels <= 1280 * 720) {
+            return getContext().getString(R.string.medium) + " (" + width + "x" + height + ")";
+        } else {
+            return getContext().getString(R.string.high) + " (" + width + "x" + height + ")";
+        }
     }
 
     private String saveImageToInternalStorage(Bitmap bitmap) {
