@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -302,8 +299,6 @@ public class AddContentActivity extends AppCompatActivity {
         Glide.with(this)
                 .asBitmap()
                 .load(imageUrl)
-                .placeholder(R.drawable.notfound)
-                .error(R.drawable.notfound)
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

@@ -169,7 +169,7 @@ public class ItemsFragment extends Fragment implements ItemAdapter.OnItemClickLi
                 items = dbHandler.searchItemsbyName(s);
                 if (items == null || items.isEmpty()) {
                     Toast.makeText(getContext(), getString(R.string.err_search_not_found), Toast.LENGTH_SHORT).show();
-                    binding.sivImage.setImageResource(R.drawable.notfound);
+                    binding.sivImage.setImageResource(R.color.white);
                     binding.tvName.setText("");
                     binding.tvSname.setText("");
                     setItem_id(-1);
